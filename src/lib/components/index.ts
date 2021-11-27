@@ -25,4 +25,4 @@
 export * from './plus-breadcrumb';
 export * from './plus-form';
 export * from './plus-form-item';
-export * from './plus-menu';
+export * from './plus-sider-menu';

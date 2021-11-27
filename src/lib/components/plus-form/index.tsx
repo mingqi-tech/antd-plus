@@ -31,16 +31,18 @@ import {
 } from '@quicker-js/class-decorator';
 import { createContext, useContext, useMemo } from 'react';
 import classTransformer from '@quicker-js/class-transformer';
+import classNames from 'classnames';
+import { AxiosResponse, AxiosError } from 'axios';
+
 import { PlusFormItem } from '../plus-form-item';
 import { Context } from '../../context';
-import classNames from 'classnames';
 
 /**
  * 表单组件
  * @param props
  * @constructor
  */
-export const PlusForm = <T extends object>(props: PlusFormProps<T>) => {
+export const PlusForm = <R, T extends {}>(props: PlusFormProps<R, T>) => {
   const { model, onFinish, onResponse, className, ...rest } = props;
   const { http } = useContext(Context);
   const mirrors = useMemo(
@@ -67,7 +69,7 @@ export const PlusForm = <T extends object>(props: PlusFormProps<T>) => {
               }
             } catch (e) {
               if (onResponse) {
-                onResponse(e);
+                onResponse(e as any);
               }
             }
           }
@@ -82,7 +84,8 @@ PlusForm.Context = createContext<
 >(new Map());
 PlusForm.Item = PlusFormItem;
 
-export interface PlusFormProps<T extends object = {}> extends FormProps<T> {
+export interface PlusFormProps<R = any, T extends object = {}>
+  extends FormProps<T> {
   model: ClassConstructor<T>;
-  onResponse?: <R>(res: R) => void;
+  onResponse?: (res: AxiosResponse<R> | AxiosResponse<AxiosError>) => void;
 }

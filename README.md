@@ -33,7 +33,8 @@ yarn add echarts @mingqi/antd-plus
 ## Example Usage
 
 ```tsx
-import {} from '@mingqi/Plus'
+import {} from '@mingqi/ant-plus'
+
  ```
 
 ## Documentation
