@@ -26,9 +26,9 @@ import '@mingqi/antd-plus/src/lib/components/index.less'
 ```
 
 - **PlusForm** component
-
+- 
 > Your must before create [http](https://quicker-js.github.io/http/) instance and use [PlusConfigProvider](https://mingqi-tech.github.io/antd-plus/modules.html#PlusConfigProvider)
-provide http
+provide http, see more [PlusForm](https://mingqi-tech.github.io/antd-plus/modules.html#PlusForm) and [PlusForm.Item](https://mingqi-tech.github.io/antd-plus/modules.html#PlusFormItem)
 
 ```ts
 // http.ts
@@ -282,7 +282,7 @@ export default () => {
 
 - **PlusBreadcrumb** component
 
-> Your must uses [@mingqi/rc-router-dom](https://mingqi-tech.github.io/rc-router-dom), `PlusBreadcrumb` in [RCRoute](https://mingqi-tech.github.io/rc-router-dom/classes/RCRoute.html#Context) context.
+> Your must uses [@mingqi/rc-router-dom](https://mingqi-tech.github.io/rc-router-dom), [PlusBreadcrumb](https://mingqi-tech.github.io/antd-plus/modules.html#PlusBreadcrumb) in [RCRoute](https://mingqi-tech.github.io/rc-router-dom/classes/RCRoute.html#Context) context.
 
 ```tsx
 import { PlusBreadcrumb } from '@mingqi/antd-plus';
@@ -304,7 +304,7 @@ export default () => {
 
 - **PlusSiderMenu** component
 
-> Your must uses [@mingqi/rc-router-dom](https://mingqi-tech.github.io/rc-router-dom), `PlusBreadcrumb` in [RCRoute](https://mingqi-tech.github.io/rc-router-dom/classes/RCRoute.html#Context) context.
+> Your must uses [@mingqi/rc-router-dom](https://mingqi-tech.github.io/rc-router-dom), [PlusSiderMenu](https://mingqi-tech.github.io/antd-plus/modules.html#PlusSiderMenu)  in [RCRoute](https://mingqi-tech.github.io/rc-router-dom/classes/RCRoute.html#Context) context.
 
 ```tsx
 import { Layout } from 'antd';
