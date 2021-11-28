@@ -16,8 +16,18 @@ yarn add @mingqi/rc-router-dom @quicker-js/class-decorator @quicker-js/class-tra
 
 ## Example Usage
 
-- PlusForm Component
-Your must before create [http](https://quicker-js.github.io/http/) instance and use [PlusConfigProvider](https://mingqi-tech.github.io/antd-plus/modules.html#PlusConfigProvider)
+```ts
+// import components
+import { PlusForm } from '@mingqi/antd-plus';
+// import css
+import '@mingqi/antd-plus/dist/cjs/index.css'
+// or import less file.
+import '@mingqi/antd-plus/src/lib/components/index.less'
+```
+
+- **PlusForm** component
+
+> Your must before create [http](https://quicker-js.github.io/http/) instance and use [PlusConfigProvider](https://mingqi-tech.github.io/antd-plus/modules.html#PlusConfigProvider)
 provide http
 
 ```ts
@@ -270,11 +280,66 @@ export default () => {
 };
  ```
 
+- **PlusBreadcrumb** component
+
+> Your must uses [@mingqi/rc-router-dom](https://mingqi-tech.github.io/rc-router-dom), `PlusBreadcrumb` in [RCRoute](https://mingqi-tech.github.io/rc-router-dom/classes/RCRoute.html#Context) context.
+
+```tsx
+import { PlusBreadcrumb } from '@mingqi/antd-plus';
+import { Button, Input, Layout } from 'antd';
+
+export default () => {
+  return (
+    <Layout>
+      {/* use PlusBreadcrumb */}
+      <PlusBreadcrumb />
+      <div className="page">
+          This is a page.
+      </div>
+    </Layout>
+  );
+};
+
+```
+
+- **PlusSiderMenu** component
+
+> Your must uses [@mingqi/rc-router-dom](https://mingqi-tech.github.io/rc-router-dom), `PlusBreadcrumb` in [RCRoute](https://mingqi-tech.github.io/rc-router-dom/classes/RCRoute.html#Context) context.
+
+```tsx
+import { Layout } from 'antd';
+import React, { Suspense, useEffect } from 'react';
+import { Outlet, useMatch, useNavigate } from 'react-router-dom';
+import { PlusSiderMenu } from '@mingqi/antd-plus';
+
+import { AutoLoading } from '../../components';
+import './styles/index.less';
+
+export default () => {
+  const navigate = useNavigate();
+  
+  return (
+    <Layout className="authentication">
+      <Layout.Header />
+      <Layout>
+        <Layout.Sider collapsed={false} theme="light">
+          <PlusSiderMenu mode="inline" theme="light" />
+        </Layout.Sider>
+        <Layout.Content className="pages">
+          <Suspense fallback={<AutoLoading />}>
+            <Outlet />
+          </Suspense>
+        </Layout.Content>
+      </Layout>
+    </Layout>
+  );
+};
+```
+
 ## Documentation
 - [ant](https://ant.design/index-cn)
 - [ApiDocs](https://mingqi-tech.github.io/antd-plus/)
 - [GitRepository](https://github.com/mingqi-tech/antd-plus)
-
 
 ## Issues
 Create [issues](https://github.com/mingqi-tech/antd-plus/issues) in this repository for anything related to the antd-plus. When creating issues please search for existing issues to avoid duplicates.
