@@ -37,7 +37,7 @@ export const PlusBreadcrumb = (props: PlusBreadcrumbProps) => {
   const route = useRoute();
   const routes = useMemo(() => {
     return route
-      .parents(root)
+      .getParentsByPath(root)
       .concat(route)
       .filter((o) => o.title);
   }, [route, root]);

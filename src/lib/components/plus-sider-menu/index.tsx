@@ -38,14 +38,14 @@ const MenuMapping = (props: MenuMappingProps) => {
   return (
     <Menu.ItemGroup>
       {props.menuList.map((o) => {
-        if (o.routes && o.routes.length) {
+        if (o.children && o.children.length) {
           return (
             <Menu.SubMenu
               icon={o.icon ? createElement(o.icon) : undefined}
-              key={o.getPath()}
+              key={o.getFullPath()}
               title={o.title}
             >
-              <MenuMapping menuList={o.routes} />;
+              <MenuMapping menuList={o.children} />;
             </Menu.SubMenu>
           );
         }
@@ -53,18 +53,18 @@ const MenuMapping = (props: MenuMappingProps) => {
           <Menu.Item
             onClick={() => {
               if (o.keys.length === 0) {
-                navigate(o.getPath());
+                navigate(o.getFullPath());
               } else {
                 const msg = `The path need ${o.keys
                   .map((o) => `'${o.name}'`)
                   .join('/')} arguments.\n    as name: ${
                   o.title || ''
-                }\n    as path: ${o.getPath()}\n    as file: ${module.id}`;
+                }\n    as path: ${o.getFullPath()}\n    as file: ${module.id}`;
                 void message.warn(msg);
                 console.warn(msg);
               }
             }}
-            key={o.getPath()}
+            key={o.getFullPath()}
             title={o.title}
             children={o.title}
           />
@@ -83,8 +83,8 @@ export const PlusSiderMenu = (props: MenuProps) => {
   const { style, className, ...rest } = props;
   const rcRoute = useRoute();
   const menuList = useMemo<RCRoute<any>[]>(() => {
-    if (rcRoute && rcRoute.routes) {
-      return rcRoute.routes;
+    if (rcRoute && rcRoute.children) {
+      return rcRoute.children;
     }
     return [];
   }, [rcRoute]);
