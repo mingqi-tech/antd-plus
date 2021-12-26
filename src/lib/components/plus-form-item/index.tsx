@@ -42,7 +42,7 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
   const { placeholder, ...options } = useMemo<
     FormItemProps & { placeholder?: string }
   >(() => {
-    const { name, index, rules = [], ...rest } = props;
+    const { name, index, label, rules = [], ...rest } = props;
     const newProps: FormItemProps & { placeholder?: string } = {
       ...rest,
     };
@@ -57,18 +57,18 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
               });
               if (o.metadata.required !== false && !hasRequired) {
                 rules.push({
-                  required: true,
                   message: `请输入${o.metadata.description || props.name}`,
+                  required: true,
                 });
                 newProps.rules = rules;
               }
 
-              if (!newProps.label) {
-                newProps.label = newProps.label || o.metadata.description;
+              if (!newProps.label && o.metadata && o.metadata.description) {
+                newProps.label = label || o.metadata.description;
               }
 
               if (newProps.label) {
-                newProps.placeholder = `请输入${options.label}`;
+                newProps.placeholder = `请输入${newProps.label}`;
               }
             }
           }
