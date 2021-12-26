@@ -41,7 +41,7 @@ export const PlusFormList = (props: PlusFormListProps) => {
 
   const options = useMemo<FormListProps>(() => {
     const { name, index, rules = [], ...rest } = props;
-    const newProps: FormListProps = { ...rest, name };
+    const newProps: FormListProps = { ...rest, name, rules };
     if (name) {
       const mirror = mirrorMap.get(name);
       if (mirror) {

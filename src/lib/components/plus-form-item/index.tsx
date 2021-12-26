@@ -44,6 +44,9 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
   >(() => {
     const { name, index, label, rules = [], ...rest } = props;
     const newProps: FormItemProps & { placeholder?: string } = {
+      name,
+      rules,
+      label,
       ...rest,
     };
     if (name) {
