@@ -36,6 +36,7 @@ import { AxiosResponse, AxiosError } from 'axios';
 
 import { PlusFormItem } from '../plus-form-item';
 import { Context } from '../../context';
+import { PlusFormList } from '../plus-form-list';
 
 /**
  * 表单组件
@@ -83,6 +84,7 @@ PlusForm.Context = createContext<
   Map<PropertyKey, PropertyMirror | MethodMirror>
 >(new Map());
 PlusForm.Item = PlusFormItem;
+PlusForm.List = PlusFormList;
 
 export interface PlusFormProps<R = any, T extends object = {}>
   extends FormProps<T> {

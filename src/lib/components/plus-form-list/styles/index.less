@@ -22,40 +22,4 @@
  * SOFTWARE.
  */
 
-import { useRoute } from '@mingqi/rc-router-dom';
-import { useMemo } from 'react';
-import { Breadcrumb, BreadcrumbProps } from 'antd';
-import classNames from 'classnames';
-
-/**
- * Breadcrumb组件
- * @param props
- * @constructor
- */
-export const PlusBreadcrumb = (props: PlusBreadcrumbProps) => {
-  const { className, style, root, ...rest } = props;
-  const route = useRoute();
-  const routes = useMemo(() => {
-    return route
-      .getParentsByPath(root)
-      .concat(route)
-      .filter((o) => o.title);
-  }, [route, root]);
-  return (
-    <div className={classNames('mq-plus-breadcrumb', className)} style={style}>
-      <Breadcrumb {...rest}>
-        {routes.map((o, i) => (
-          <Breadcrumb.Item
-            key={o.title}
-            href={i !== routes.length - 1 ? o.getFullPath() : undefined}
-            children={o.title}
-          />
-        ))}
-      </Breadcrumb>
-    </div>
-  );
-};
-
-export interface PlusBreadcrumbProps extends BreadcrumbProps {
-  root?: string;
-}
+.mq-plus-form-item {}

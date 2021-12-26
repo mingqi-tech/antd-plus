@@ -25,7 +25,7 @@
 import { Form, FormItemProps } from 'antd';
 import classNames from 'classnames';
 import { ApiPropertyMetadata } from '@quicker-js/http';
-import { cloneElement, useContext, useMemo } from 'react';
+import React, { cloneElement, useContext, useMemo } from 'react';
 
 import { PlusForm } from '../plus-form';
 
@@ -37,47 +37,66 @@ import { PlusForm } from '../plus-form';
 export const PlusFormItem = (props: PlusFormItemProps) => {
   const mirrorMap = useContext(PlusForm.Context);
 
-  const option = useMemo<PlusFormItemProps>(() => {
-    if (props.name) {
-      const mirror = mirrorMap.get(props.name as any);
+  const children = React.Children.only(props.children);
+
+  const { placeholder, ...options } = useMemo<
+    FormItemProps & { placeholder?: string }
+  >(() => {
+    const { name, index, rules = [], ...rest } = props;
+    const newProps: FormItemProps & { placeholder?: string } = {
+      ...rest,
+    };
+    if (name) {
+      const mirror = mirrorMap.get(name);
       if (mirror) {
-        const options: PlusFormItemProps = { ...props };
         mirror.allMetadata.forEach((o) => {
           if (o instanceof ApiPropertyMetadata) {
             if (o.metadata) {
-              if (o.metadata.required) {
-                options.rules = options.rules || [
-                  {
-                    required: true,
-                    message: `请输入${o.metadata.description || props.name}`,
-                  },
-                ];
+              const hasRequired = rules.some((rule) => {
+                return typeof rule !== 'function' && rule.required;
+              });
+              if (o.metadata.required !== false && !hasRequired) {
+                rules.push({
+                  required: true,
+                  message: `请输入${o.metadata.description || props.name}`,
+                });
+                newProps.rules = rules;
               }
-              options.label = options.label || o.metadata.description;
-              if (options.label) {
-                options.placeholder = `请输入${options.label}`;
+
+              if (!newProps.label) {
+                newProps.label = newProps.label || o.metadata.description;
+              }
+
+              if (newProps.label) {
+                newProps.placeholder = `请输入${options.label}`;
               }
             }
           }
         });
-        return options;
+        if (index) {
+          newProps.name = [index, name];
+          newProps.fieldKey = newProps.name;
+        }
       }
     }
 
-    return props;
+    return newProps;
   }, [props, mirrorMap]);
 
   return (
     <Form.Item
-      {...option}
+      {...options}
       className={classNames('mq-plus-form-item', props.className)}
-      children={cloneElement(props.children as any, {
-        placeholder: option.placeholder,
+      children={cloneElement(children as any, {
+        placeholder,
       })}
     />
   );
 };
 
-export interface PlusFormItemProps extends FormItemProps {
+export interface PlusFormItemProps
+  extends Omit<FormItemProps, 'fieldKey' | 'isListField' | 'name'> {
   placeholder?: string;
+  index?: number;
+  name?: string;
 }

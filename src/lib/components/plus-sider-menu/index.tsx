@@ -25,53 +25,49 @@
 import { Menu, MenuProps, message } from 'antd';
 import classNames from 'classnames';
 import { RCRoute, useRoute } from '@mingqi/rc-router-dom';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
 import { createElement, useEffect, useMemo, useState } from 'react';
 
 /**
- * 遍历菜单项目组件
- * @param props
- * @constructor
+ * 遍历菜单
+ * @param navigate
+ * @param menuList
  */
-const MenuMapping = (props: MenuMappingProps) => {
-  const navigate = useNavigate();
-  return (
-    <Menu.ItemGroup>
-      {props.menuList.map((o) => {
-        if (o.children && o.children.length) {
-          return (
-            <Menu.SubMenu
-              icon={o.icon ? createElement(o.icon) : undefined}
-              key={o.getFullPath()}
-              title={o.title}
-            >
-              <MenuMapping menuList={o.children} />;
-            </Menu.SubMenu>
-          );
-        }
-        return (
-          <Menu.Item
-            onClick={() => {
-              if (o.keys.length === 0) {
-                navigate(o.getFullPath());
-              } else {
-                const msg = `The path need ${o.keys
-                  .map((o) => `'${o.name}'`)
-                  .join('/')} arguments.\n    as name: ${
-                  o.title || ''
-                }\n    as path: ${o.getFullPath()}\n    as file: ${module.id}`;
-                void message.warn(msg);
-                console.warn(msg);
-              }
-            }}
-            key={o.getFullPath()}
-            title={o.title}
-            children={o.title}
-          />
-        );
-      })}
-    </Menu.ItemGroup>
-  );
+const menuMapping = (navigate: NavigateFunction, menuList: RCRoute[]) => {
+  return menuList.map((o) => {
+    if (o.children && o.children.length) {
+      return (
+        <Menu.SubMenu
+          icon={o.icon ? createElement(o.icon) : undefined}
+          key={o.getFullPath()}
+          title={o.title}
+        >
+          {menuMapping(navigate, o.children)}
+        </Menu.SubMenu>
+      );
+    }
+    return (
+      <Menu.Item
+        onClick={() => {
+          if (o.keys.length === 0) {
+            navigate(o.getFullPath());
+          } else {
+            const msg = `The path need ${o.keys
+              .map((o) => `'${o.name}'`)
+              .join('/')} arguments.\n    as name: ${
+              o.title || ''
+            }\n    as path: ${o.getFullPath()}\n    as file: ${module.id}`;
+            void message.warn(msg);
+            console.warn(msg);
+          }
+        }}
+        icon={o.icon ? createElement(o.icon) : undefined}
+        key={o.getFullPath()}
+        title={o.title}
+        children={o.title}
+      />
+    );
+  });
 };
 
 /**
@@ -80,6 +76,7 @@ const MenuMapping = (props: MenuMappingProps) => {
  * @constructor
  */
 export const PlusSiderMenu = (props: MenuProps) => {
+  const navigate = useNavigate();
   const { style, className, ...rest } = props;
   const rcRoute = useRoute();
   const menuList = useMemo<RCRoute<any>[]>(() => {
@@ -109,12 +106,8 @@ export const PlusSiderMenu = (props: MenuProps) => {
   return (
     <div className={classNames('mq-plus-sider-menu', className)} style={style}>
       <Menu {...rest} activeKey={activeKey} defaultOpenKeys={openKeys}>
-        <MenuMapping menuList={menuList} />
+        {menuMapping(navigate, menuList)}
       </Menu>
     </div>
   );
 };
-
-interface MenuMappingProps {
-  menuList: RCRoute[];
-}
