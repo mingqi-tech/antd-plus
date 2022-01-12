@@ -76,7 +76,7 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
             }
           }
         });
-        if (index) {
+        if (typeof index === 'number') {
           newProps.name = [index, name];
           newProps.fieldKey = newProps.name;
         }

@@ -65,7 +65,7 @@ export const PlusFormList = (props: PlusFormListProps) => {
           }
         });
       }
-      if (index) {
+      if (typeof index === 'number') {
         newProps.name = [index, name];
       }
     }

@@ -27,3 +27,5 @@ export * from './plus-form';
 export * from './plus-form-item';
 export * from './plus-form-list';
 export * from './plus-sider-menu';
+export * from './plus-button';
+export * from './plus-modal';

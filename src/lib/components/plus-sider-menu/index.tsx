@@ -26,7 +26,7 @@ import { Menu, MenuProps, message } from 'antd';
 import classNames from 'classnames';
 import { RCRoute, useRoute } from '@mingqi/rc-router-dom';
 import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
-import { createElement, useEffect, useMemo, useState } from 'react';
+import { createElement, useMemo } from 'react';
 
 /**
  * 遍历菜单
@@ -86,14 +86,9 @@ export const PlusSiderMenu = (props: MenuProps) => {
     return [];
   }, [rcRoute]);
   const location = useLocation();
-  const [activeKey, setActiveKey] = useState(location.pathname);
-
-  useEffect(() => {
-    setActiveKey(location.pathname);
-  }, [location.pathname]);
   const openKeys = useMemo(() => {
     const list: string[] = [];
-    const strings = activeKey.split('/');
+    const strings = location.pathname.split('/');
     strings.forEach((o, i) => {
       const v = strings.slice(0, i + 1).join('/');
       if (v) {
@@ -101,11 +96,15 @@ export const PlusSiderMenu = (props: MenuProps) => {
       }
     });
     return list;
-  }, [activeKey]);
+  }, [location.pathname]);
 
   return (
     <div className={classNames('mq-plus-sider-menu', className)} style={style}>
-      <Menu {...rest} activeKey={activeKey} defaultOpenKeys={openKeys}>
+      <Menu
+        {...rest}
+        selectedKeys={[location.pathname]}
+        defaultOpenKeys={openKeys}
+      >
         {menuMapping(navigate, menuList)}
       </Menu>
     </div>
