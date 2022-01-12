@@ -23,11 +23,10 @@
  */
 
 import { Form } from 'antd';
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { PlusForm } from '../plus-form';
 import { FormListProps } from 'antd/lib/form';
-import { ApiPropertyMetadata } from '@quicker-js/http';
 import { ClassConstructor, ClassMirror } from '@quicker-js/class-decorator';
 
 /**
@@ -36,35 +35,12 @@ import { ClassConstructor, ClassMirror } from '@quicker-js/class-decorator';
  * @constructor
  */
 export const PlusFormList = (props: PlusFormListProps) => {
-  const mirrorMap = useContext(PlusForm.Context);
   const { model } = props;
 
   const options = useMemo<FormListProps>(() => {
     const { name, index, rules = [], ...rest } = props;
     const newProps: FormListProps = { ...rest, name, rules };
     if (name) {
-      const mirror = mirrorMap.get(name);
-      if (mirror) {
-        mirror.allMetadata.forEach((o) => {
-          if (o instanceof ApiPropertyMetadata) {
-            const hasValidator = rules.some((o) => o.validator);
-            if (
-              !hasValidator &&
-              o.metadata &&
-              o.metadata.description &&
-              o.metadata.required !== false
-            ) {
-              rules.push({
-                validator: (rules, value, callback) => {
-                  if (!value) {
-                    callback(`请输入${o.metadata.description}`);
-                  }
-                },
-              });
-            }
-          }
-        });
-      }
       if (typeof index === 'number') {
         newProps.name = [index, name];
       }
