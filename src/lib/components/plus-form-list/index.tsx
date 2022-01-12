@@ -35,18 +35,7 @@ import { ClassConstructor, ClassMirror } from '@quicker-js/class-decorator';
  * @constructor
  */
 export const PlusFormList = (props: PlusFormListProps) => {
-  const { model } = props;
-
-  const options = useMemo<FormListProps>(() => {
-    const { name, index, rules = [], ...rest } = props;
-    const newProps: FormListProps = { ...rest, name, rules };
-    if (name) {
-      if (typeof index === 'number') {
-        newProps.name = [index, name];
-      }
-    }
-    return newProps;
-  }, [props]);
+  const { model, name, index, ...rest } = props;
 
   const mirrors = useMemo(
     () => ClassMirror.reflect(model).allInstanceMembers,
@@ -55,7 +44,10 @@ export const PlusFormList = (props: PlusFormListProps) => {
 
   return (
     <PlusForm.Context.Provider value={mirrors}>
-      <Form.List {...options} />
+      <Form.List
+        {...rest}
+        name={typeof index === 'number' ? [index, name] : name}
+      />
     </PlusForm.Context.Provider>
   );
 };
@@ -65,4 +57,5 @@ export interface PlusFormListProps<T extends {} = any>
   index?: number;
   name: string;
   model: ClassConstructor<T>;
+  children: FormListProps['children'];
 }

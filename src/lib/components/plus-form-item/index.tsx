@@ -36,13 +36,12 @@ import { PlusForm } from '../plus-form';
  */
 export const PlusFormItem = (props: PlusFormItemProps) => {
   const mirrorMap = useContext(PlusForm.Context);
-
-  const children = React.Children.only(props.children);
+  const { name, index, label, rules = [], children, ...rest } = props;
+  const child = useMemo(() => React.Children.only(children), [children]);
 
   const { placeholder, ...options } = useMemo<
     FormItemProps & { placeholder?: string }
   >(() => {
-    const { name, index, label, rules = [], ...rest } = props;
     const newProps: FormItemProps & { placeholder?: string } = {
       name,
       rules,
@@ -78,19 +77,19 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
         });
         if (typeof index === 'number') {
           newProps.name = [index, name];
-          newProps.fieldKey = newProps.name;
+          newProps.fieldKey = index;
         }
       }
     }
 
     return newProps;
-  }, [props, mirrorMap]);
+  }, [name, index, label, rules, rest, mirrorMap]);
 
   return (
     <Form.Item
       {...options}
       className={classNames('mq-plus-form-item', props.className)}
-      children={cloneElement(children as any, {
+      children={cloneElement(child as any, {
         placeholder,
       })}
     />
