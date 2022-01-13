@@ -109,9 +109,7 @@ export class LoginResponseDto {
      * 权限列表
      */
     @ApiProperty({description: '权限列表', type: 'object'})
-    @Typed({
-        type: String,
-    })
+    @TypedArray(String)
     public authorities: string[];
 
     /**
