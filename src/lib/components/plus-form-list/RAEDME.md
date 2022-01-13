@@ -110,9 +110,11 @@ export default () => {
 
 ## API
 
-| 名称           | 描述                                 |
-|--------------|------------------------------------|
-| name         | String                             |
-| renderItem   | (index, operation, fields) => void |
-| renderAfter  | () => void                         |
-| renderBefore | () => void                         |
+| 名称           | 是否必须 | 描述                     | 类型                                 |
+|--------------|------|------------------------|------------------------------------|
+| name         | 是    | 字段名称                   | String                             | 
+| model        | 是    | 字段所属模型                 | class                              |
+| index        | 否    | 字段下标，当前字段为数组的时候使用      | Number                             |
+| renderItem   | 是    | 渲染列，渲染列数据              | (index, operation, fields) => void |
+| renderAfter  | 否    | 前置渲染，渲染额外的组件 例如添加删除按钮等 | (operation, meta) => void          |
+| renderBefore | 否    | 后置渲染，渲染额外的组件 例如添加删除按钮等 | (operation, meta) => void          |

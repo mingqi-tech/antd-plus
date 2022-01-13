@@ -55,3 +55,13 @@ export default () => {
     )
 }
 ```
+
+
+## API
+
+| 名称         | 是否必须 | 描述              | 类型                                            |
+|------------|------|-----------------|-----------------------------------------------|
+| model      | 是    | 字段所属模型          | class                                         |
+| onResponse | 否    | 字段所属模型          | (response: AxiosResponse) => void             |
+| onSuccess  | 否    | 字段所属模型          | (response: AxiosResponse) => void             |
+| onFail     | 否    | 字段所属模型          | (response: AxiosResponse<AxiosError>) => void |
