@@ -7,13 +7,15 @@ import { ReactNode, useState } from 'react';
  * @constructor
  */
 export function PlusModal(props: PlusModalProps) {
-  const { onOk, confirmLoading, ...rest } = props;
+  const { onOk, confirmLoading, title, ...rest } = props;
   const [loading, setLoading] = useState<boolean>(false);
   return (
     <Modal
       maskClosable={false}
       destroyOnClose
       {...rest}
+      title={title}
+      visible={Boolean(title)}
       confirmLoading={loading || confirmLoading}
       onOk={async (e) => {
         try {
@@ -33,6 +35,6 @@ export function PlusModal(props: PlusModalProps) {
   );
 }
 
-export interface PlusModalProps extends ModalProps {
+export interface PlusModalProps extends Omit<ModalProps, 'visible'> {
   children?: ReactNode;
 }
