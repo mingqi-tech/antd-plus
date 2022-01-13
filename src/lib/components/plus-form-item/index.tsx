@@ -28,6 +28,7 @@ import { ApiPropertyMetadata } from '@quicker-js/http';
 import React, { cloneElement, useContext, useMemo } from 'react';
 
 import { PlusForm } from '../plus-form';
+import { FormListFieldData } from 'antd/es/form/FormList';
 
 /**
  * 表单Item组件
@@ -36,7 +37,7 @@ import { PlusForm } from '../plus-form';
  */
 export const PlusFormItem = (props: PlusFormItemProps) => {
   const mirrorMap = useContext(PlusForm.Context);
-  const { name, index, label, rules = [], children, ...rest } = props;
+  const { name, field, label, rules = [], children, ...rest } = props;
   const child = useMemo(() => React.Children.only(children), [children]);
 
   const { placeholder, ...options } = useMemo<
@@ -46,7 +47,7 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
       name,
       rules,
       label,
-      ...rest,
+      ...field,
     };
     if (name) {
       const mirror = mirrorMap.get(name);
@@ -75,18 +76,18 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
             }
           }
         });
-        if (typeof index === 'number') {
-          newProps.name = [index, name];
-          newProps.fieldKey = index;
+        if (field) {
+          newProps.name = [field.name, name];
         }
       }
     }
 
     return newProps;
-  }, [name, index, label, rules, rest, mirrorMap]);
+  }, [name, label, rules, field, mirrorMap]);
 
   return (
     <Form.Item
+      {...rest}
       {...options}
       className={classNames('mq-plus-form-item', props.className)}
       children={cloneElement(child as any, {
@@ -96,9 +97,8 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
   );
 };
 
-export interface PlusFormItemProps
-  extends Omit<FormItemProps, 'fieldKey' | 'isListField' | 'name'> {
+export interface PlusFormItemProps extends Omit<FormItemProps, 'name'> {
+  field?: FormListFieldData;
   placeholder?: string;
-  index?: number;
   name?: string;
 }

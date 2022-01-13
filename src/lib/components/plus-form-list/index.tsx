@@ -28,6 +28,7 @@ import { useMemo } from 'react';
 import { PlusForm } from '../plus-form';
 import { FormListProps } from 'antd/lib/form';
 import { ClassConstructor, ClassMirror } from '@quicker-js/class-decorator';
+import { FormListFieldData } from 'antd/es/form/FormList';
 
 /**
  * 表单List组件
@@ -35,7 +36,7 @@ import { ClassConstructor, ClassMirror } from '@quicker-js/class-decorator';
  * @constructor
  */
 export const PlusFormList = (props: PlusFormListProps) => {
-  const { model, name, index, ...rest } = props;
+  const { model, name, field, ...rest } = props;
 
   const mirrors = useMemo(
     () => ClassMirror.reflect(model).allInstanceMembers,
@@ -44,17 +45,14 @@ export const PlusFormList = (props: PlusFormListProps) => {
 
   return (
     <PlusForm.Context.Provider value={mirrors}>
-      <Form.List
-        {...rest}
-        name={typeof index === 'number' ? [index, name] : name}
-      />
+      <Form.List {...rest} name={field ? [field.name, name] : name} />
     </PlusForm.Context.Provider>
   );
 };
 
 export interface PlusFormListProps<T extends {} = any>
   extends Omit<FormListProps, 'name'> {
-  index?: number;
+  field?: FormListFieldData;
   name: string;
   model: ClassConstructor<T>;
   children: FormListProps['children'];
