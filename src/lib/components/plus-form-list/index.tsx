@@ -23,12 +23,13 @@
  */
 
 import { Form } from 'antd';
-import { useMemo } from 'react';
+import { Fragment, ReactNode, useMemo } from 'react';
 
 import { PlusForm } from '../plus-form';
 import { FormListProps } from 'antd/lib/form';
 import { ClassConstructor, ClassMirror } from '@quicker-js/class-decorator';
-import { FormListFieldData } from 'antd/es/form/FormList';
+import { FormListFieldData, FormListOperation } from 'antd/es/form/FormList';
+import { StoreValue } from 'rc-field-form/lib/interface';
 
 /**
  * 表单List组件
@@ -36,24 +37,81 @@ import { FormListFieldData } from 'antd/es/form/FormList';
  * @constructor
  */
 export const PlusFormList = (props: PlusFormListProps) => {
-  const { model, name, field, ...rest } = props;
+  const {
+    model,
+    name,
+    children,
+    renderAfter,
+    renderBefore,
+    index,
+    renderItem,
+    ...rest
+  } = props;
 
   const mirrors = useMemo(
     () => ClassMirror.reflect(model).allInstanceMembers,
     [model]
   );
-
   return (
     <PlusForm.Context.Provider value={mirrors}>
-      <Form.List {...rest} name={field ? [field.name, name] : name} />
+      <Form.List
+        {...rest}
+        name={index ? [index, name] : name}
+        children={
+          children
+            ? children
+            : (fields, operation, meta) => (
+                <Fragment>
+                  {typeof renderBefore === 'function' &&
+                    renderBefore(operation, meta)}
+                  {typeof renderItem === 'function' &&
+                    fields.map((field) => (
+                      <Fragment key={field.fieldKey}>
+                        {renderItem(
+                          field.name,
+                          {
+                            remove: () => operation.remove(field.name),
+                            add: (defaultValue, insertIndex) =>
+                              operation.add(defaultValue, insertIndex),
+                            move: (to) => operation.move(field.name, to),
+                          },
+                          fields
+                        )}
+                      </Fragment>
+                    ))}
+                  {typeof renderAfter === 'function' &&
+                    renderAfter(operation, meta)}
+                </Fragment>
+              )
+        }
+      />
     </PlusForm.Context.Provider>
   );
 };
 
 export interface PlusFormListProps<T extends {} = any>
-  extends Omit<FormListProps, 'name'> {
-  field?: FormListFieldData;
+  extends Omit<FormListProps, 'name' | 'children'> {
+  children?: FormListProps['children'];
+  renderBefore?: (
+    operation: FormListOperation,
+    meta: { errors: ReactNode[]; warnings: ReactNode[] }
+  ) => ReactNode;
+  renderAfter?: (
+    operation: FormListOperation,
+    meta: { errors: ReactNode[]; warnings: ReactNode[] }
+  ) => ReactNode;
+  index?: number;
   name: string;
   model: ClassConstructor<T>;
-  children: FormListProps['children'];
+  renderItem?: (
+    index: number,
+    operation: FormListItemOperation,
+    fields: FormListFieldData[]
+  ) => ReactNode;
+}
+
+export interface FormListItemOperation {
+  add: (defaultValue?: StoreValue, insertIndex?: number) => void;
+  remove: () => void;
+  move: (to: number) => void;
 }

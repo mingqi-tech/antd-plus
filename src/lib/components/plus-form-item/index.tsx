@@ -26,9 +26,7 @@ import { Form, FormItemProps } from 'antd';
 import classNames from 'classnames';
 import { ApiPropertyMetadata } from '@quicker-js/http';
 import React, { cloneElement, useContext, useMemo } from 'react';
-
 import { PlusForm } from '../plus-form';
-import { FormListFieldData } from 'antd/es/form/FormList';
 
 /**
  * 表单Item组件
@@ -37,7 +35,7 @@ import { FormListFieldData } from 'antd/es/form/FormList';
  */
 export const PlusFormItem = (props: PlusFormItemProps) => {
   const mirrorMap = useContext(PlusForm.Context);
-  const { name, field, label, rules = [], children, ...rest } = props;
+  const { name, index, label, rules = [], children, ...rest } = props;
   const child = useMemo(() => React.Children.only(children), [children]);
 
   const { placeholder, ...options } = useMemo<
@@ -59,7 +57,7 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
               });
               if (o.metadata.required !== false && !hasRequired) {
                 rules.push({
-                  message: `请输入${o.metadata.description || props.name}`,
+                  message: `请输入${o.metadata.description || name}`,
                   required: true,
                 });
                 newProps.rules = rules;
@@ -79,14 +77,13 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
     }
 
     return newProps;
-  }, [name, label, rules, field, mirrorMap]);
+  }, [name, rules, label, mirrorMap]);
 
   return (
     <Form.Item
       {...rest}
-      {...field}
       {...options}
-      name={field && name ? [field.name, name] : name}
+      name={typeof index === 'number' && name ? [index, name] : name}
       className={classNames('mq-plus-form-item', props.className)}
       children={cloneElement(child as any, {
         placeholder,
@@ -96,7 +93,7 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
 };
 
 export interface PlusFormItemProps extends Omit<FormItemProps, 'name'> {
-  field?: FormListFieldData;
+  index?: number;
   placeholder?: string;
   name?: string;
 }

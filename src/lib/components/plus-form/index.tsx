@@ -44,7 +44,8 @@ import { PlusFormList } from '../plus-form-list';
  * @constructor
  */
 export const PlusForm = <R, T extends {}>(props: PlusFormProps<R, T>) => {
-  const { model, onFinish, onResponse, className, ...rest } = props;
+  const { model, onFinish, onResponse, onSuccess, onFail, className, ...rest } =
+    props;
   const { http } = useContext(Context);
   const mirrors = useMemo(
     () => ClassMirror.reflect(model).allInstanceMembers,
@@ -68,9 +69,17 @@ export const PlusForm = <R, T extends {}>(props: PlusFormProps<R, T>) => {
               if (onResponse) {
                 onResponse(res);
               }
+
+              if (onSuccess) {
+                onSuccess(res);
+              }
             } catch (e) {
               if (onResponse) {
                 onResponse(e as any);
+              }
+
+              if (onFail) {
+                onFail(e as any);
               }
             }
           }
@@ -90,4 +99,6 @@ export interface PlusFormProps<R = any, T extends object = {}>
   extends FormProps<T> {
   model: ClassConstructor<T>;
   onResponse?: (res: AxiosResponse<R> | AxiosResponse<AxiosError>) => void;
+  onSuccess?: (res: AxiosResponse<R>) => void;
+  onFail?: (err: AxiosResponse<AxiosError>) => void;
 }
