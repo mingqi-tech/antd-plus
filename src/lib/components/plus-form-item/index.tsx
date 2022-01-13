@@ -47,7 +47,6 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
       name,
       rules,
       label,
-      ...field,
     };
     if (name) {
       const mirror = mirrorMap.get(name);
@@ -76,9 +75,6 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
             }
           }
         });
-        if (field) {
-          newProps.name = [field.name, name];
-        }
       }
     }
 
@@ -88,7 +84,9 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
   return (
     <Form.Item
       {...rest}
+      {...field}
       {...options}
+      name={field && name ? [field.name, name] : name}
       className={classNames('mq-plus-form-item', props.className)}
       children={cloneElement(child as any, {
         placeholder,
