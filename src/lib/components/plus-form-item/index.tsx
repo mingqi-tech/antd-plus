@@ -35,7 +35,16 @@ import { PlusForm } from '../plus-form';
  */
 export const PlusFormItem = (props: PlusFormItemProps) => {
   const mirrorMap = useContext(PlusForm.Context);
-  const { name, index, label, rules = [], children, ...rest } = props;
+  const {
+    name,
+    index,
+    label,
+    hidden,
+    rules = [],
+    shouldUpdate,
+    children,
+    ...rest
+  } = props;
   const child = useMemo(() => React.Children.only(children), [children]);
 
   const { placeholder, ...options } = useMemo<
@@ -46,7 +55,7 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
       rules,
       label,
     };
-    if (name) {
+    if (name && !hidden) {
       const mirror = mirrorMap.get(name);
       if (mirror) {
         mirror.allMetadata.forEach((o) => {
@@ -77,17 +86,23 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
     }
 
     return newProps;
-  }, [name, rules, label, mirrorMap]);
+  }, [name, rules, label, mirrorMap, hidden]);
 
   return (
     <Form.Item
       {...rest}
       {...options}
+      hidden={hidden}
+      shouldUpdate={shouldUpdate}
       name={typeof index === 'number' && name ? [index, name] : name}
       className={classNames('mq-plus-form-item', props.className)}
-      children={cloneElement(child as any, {
-        placeholder,
-      })}
+      children={
+        shouldUpdate
+          ? children
+          : cloneElement(child as any, {
+              placeholder,
+            })
+      }
     />
   );
 };

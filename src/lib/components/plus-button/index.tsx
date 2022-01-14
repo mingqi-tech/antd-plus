@@ -11,7 +11,7 @@ export function PlusButton(props: Omit<ButtonProps, 'loading'>) {
   const [loading, setLoading] = useState<boolean>(false);
   return (
     <Button
-      loading={loading}
+      disabled={loading}
       {...rest}
       onClick={async (e) => {
         try {
