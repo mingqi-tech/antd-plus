@@ -45,7 +45,10 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
     children,
     ...rest
   } = props;
-  const child = useMemo(() => React.Children.only(children), [children]);
+  const child = useMemo(
+    () => (shouldUpdate ? children : React.Children.only(children)),
+    [children, shouldUpdate]
+  );
 
   const { placeholder, ...options } = useMemo<
     FormItemProps & { placeholder?: string }
@@ -98,7 +101,7 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
       className={classNames('mq-plus-form-item', props.className)}
       children={
         shouldUpdate
-          ? children
+          ? child
           : cloneElement(child as any, {
               placeholder,
             })
