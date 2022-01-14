@@ -56,14 +56,14 @@ export const PlusForm = <R, T extends {}>(props: PlusFormProps<R, T>) => {
       <Form
         {...rest}
         className={classNames('mq-plus-form', className)}
-        onFinish={async (...args) => {
+        onFinish={async (value) => {
           if (onFinish) {
-            return onFinish(...args);
+            return onFinish(classTransformer.plainToInstance(model, value));
           }
           if (http) {
             try {
               const res = await http.fetch(
-                classTransformer.plainToInstance(model, args[0])
+                classTransformer.plainToInstance(model, value)
               );
 
               if (onResponse) {
