@@ -97,7 +97,7 @@ export const PlusSiderMenu = (props: MenuProps) => {
         list.push(v);
       }
     });
-    return list;
+    return list.reverse();
   }, [location.pathname]);
 
   return (
