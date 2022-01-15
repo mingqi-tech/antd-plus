@@ -37,7 +37,7 @@ const menuMapping = (navigate: NavigateFunction, menuList: RCRoute[]) => {
   return menuList
     .filter((o) => o.showMenu !== false)
     .map((o) => {
-      if (o.children && o.children.length) {
+      if (o.children && o.children.filter((o) => o.showMenu !== false).length) {
         return (
           <Menu.SubMenu
             icon={o.icon ? createElement(o.icon) : undefined}
