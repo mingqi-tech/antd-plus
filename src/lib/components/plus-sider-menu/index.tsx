@@ -103,9 +103,9 @@ export const PlusSiderMenu = (props: MenuProps) => {
   return (
     <div className={classNames('mq-plus-sider-menu', className)} style={style}>
       <Menu
-        {...rest}
         selectedKeys={[location.pathname]}
         defaultOpenKeys={openKeys}
+        {...rest}
       >
         {menuMapping(navigate, menuList)}
       </Menu>

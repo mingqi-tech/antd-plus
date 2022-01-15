@@ -1,6 +1,6 @@
 {
   "name": "@mingqi/antd-plus",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "main": "dist/cjs",
   "types": "dist/types",
   "description": "The antd-plus uses antd@4.17 developed a react component.",
