@@ -34,40 +34,42 @@ import { createElement, useMemo } from 'react';
  * @param menuList
  */
 const menuMapping = (navigate: NavigateFunction, menuList: RCRoute[]) => {
-  return menuList.map((o) => {
-    if (o.children && o.children.length) {
+  return menuList
+    .filter((o) => o.showMenu !== false)
+    .map((o) => {
+      if (o.children && o.children.length) {
+        return (
+          <Menu.SubMenu
+            icon={o.icon ? createElement(o.icon) : undefined}
+            key={o.getFullPath()}
+            title={o.title}
+          >
+            {menuMapping(navigate, o.children)}
+          </Menu.SubMenu>
+        );
+      }
       return (
-        <Menu.SubMenu
+        <Menu.Item
+          onClick={() => {
+            if (o.keys.length === 0) {
+              navigate(o.getFullPath());
+            } else {
+              const msg = `The path need ${o.keys
+                .map((o) => `'${o.name}'`)
+                .join('/')} arguments.\n    as name: ${
+                o.title || ''
+              }\n    as path: ${o.getFullPath()}\n    as file: ${module.id}`;
+              void message.warn(msg);
+              console.warn(msg);
+            }
+          }}
           icon={o.icon ? createElement(o.icon) : undefined}
           key={o.getFullPath()}
           title={o.title}
-        >
-          {menuMapping(navigate, o.children)}
-        </Menu.SubMenu>
+          children={o.title}
+        />
       );
-    }
-    return (
-      <Menu.Item
-        onClick={() => {
-          if (o.keys.length === 0) {
-            navigate(o.getFullPath());
-          } else {
-            const msg = `The path need ${o.keys
-              .map((o) => `'${o.name}'`)
-              .join('/')} arguments.\n    as name: ${
-              o.title || ''
-            }\n    as path: ${o.getFullPath()}\n    as file: ${module.id}`;
-            void message.warn(msg);
-            console.warn(msg);
-          }
-        }}
-        icon={o.icon ? createElement(o.icon) : undefined}
-        key={o.getFullPath()}
-        title={o.title}
-        children={o.title}
-      />
-    );
-  });
+    });
 };
 
 /**
