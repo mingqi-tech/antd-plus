@@ -41,13 +41,17 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
     label,
     hidden,
     rules = [],
+    dependencies,
     shouldUpdate,
     children,
     ...rest
   } = props;
   const child = useMemo(
-    () => (shouldUpdate ? children : React.Children.only(children)),
-    [children, shouldUpdate]
+    () =>
+      shouldUpdate || (Array.isArray(dependencies) && dependencies.length)
+        ? children
+        : React.Children.only(children),
+    [children, shouldUpdate, dependencies]
   );
 
   const { placeholder, ...options } = useMemo<
@@ -97,6 +101,7 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
       {...options}
       hidden={hidden}
       shouldUpdate={shouldUpdate}
+      dependencies={dependencies}
       name={typeof index === 'number' && name ? [index, name] : name}
       className={classNames('mq-plus-form-item', props.className)}
       children={
