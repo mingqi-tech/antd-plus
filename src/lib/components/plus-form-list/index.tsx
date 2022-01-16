@@ -23,13 +23,14 @@
  */
 
 import { Form } from 'antd';
-import { Fragment, ReactNode, useMemo } from 'react';
+import { CSSProperties, ReactNode, useMemo } from 'react';
 
 import { PlusForm } from '../plus-form';
 import { FormListProps } from 'antd/lib/form';
 import { ClassConstructor, ClassMirror } from '@quicker-js/class-decorator';
 import { FormListFieldData, FormListOperation } from 'antd/es/form/FormList';
 import { StoreValue } from 'rc-field-form/lib/interface';
+import classNames from 'classnames';
 
 /**
  * 表单List组件
@@ -45,6 +46,10 @@ export const PlusFormList = (props: PlusFormListProps) => {
     renderBefore,
     index,
     renderItem,
+    listClassName,
+    itemClassName,
+    listStyle,
+    itemStyle,
     ...rest
   } = props;
 
@@ -61,12 +66,22 @@ export const PlusFormList = (props: PlusFormListProps) => {
           children
             ? children
             : (fields, operation, meta) => (
-                <Fragment>
+                <div
+                  className={classNames('mq-plus-form-list', listClassName)}
+                  style={listStyle}
+                >
                   {typeof renderBefore === 'function' &&
                     renderBefore(operation, meta)}
                   {typeof renderItem === 'function' &&
                     fields.map((field) => (
-                      <Fragment key={field.fieldKey}>
+                      <div
+                        className={classNames(
+                          'mq-plus-form-list-item',
+                          itemClassName
+                        )}
+                        style={itemStyle}
+                        key={field.fieldKey}
+                      >
                         {renderItem(
                           field.name,
                           {
@@ -77,11 +92,11 @@ export const PlusFormList = (props: PlusFormListProps) => {
                           },
                           fields
                         )}
-                      </Fragment>
+                      </div>
                     ))}
                   {typeof renderAfter === 'function' &&
                     renderAfter(operation, meta)}
-                </Fragment>
+                </div>
               )
         }
       />
@@ -108,6 +123,10 @@ export interface PlusFormListProps<T extends {} = any>
     operation: FormListItemOperation,
     fields: FormListFieldData[]
   ) => ReactNode;
+  listStyle?: CSSProperties;
+  itemStyle?: CSSProperties;
+  listClassName?: string;
+  itemClassName?: string;
 }
 
 export interface FormListItemOperation {
