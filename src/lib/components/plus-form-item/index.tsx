@@ -69,7 +69,9 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
           if (o instanceof ApiPropertyMetadata) {
             if (o.metadata) {
               const hasRequired = rules.some((rule) => {
-                return typeof rule !== 'function' && rule.required;
+                return (
+                  typeof rule !== 'function' && rule.required !== undefined
+                );
               });
               if (o.metadata.required !== false && !hasRequired) {
                 rules.push({
