@@ -70,32 +70,39 @@ export const PlusFormList = (props: PlusFormListProps) => {
                   className={classNames('mq-plus-form-list', listClassName)}
                   style={listStyle}
                 >
-                  {typeof renderBefore === 'function' &&
-                    renderBefore(operation, meta)}
-                  {typeof renderItem === 'function' &&
-                    fields.map((field) => (
-                      <div
-                        className={classNames(
-                          'mq-plus-form-list-item',
-                          itemClassName
-                        )}
-                        style={itemStyle}
-                        key={field.fieldKey}
-                      >
-                        {renderItem(
-                          field.name,
-                          {
-                            remove: () => operation.remove(field.name),
-                            add: (defaultValue, insertIndex) =>
-                              operation.add(defaultValue, insertIndex),
-                            move: (to) => operation.move(field.name, to),
-                          },
-                          fields
-                        )}
-                      </div>
-                    ))}
-                  {typeof renderAfter === 'function' &&
-                    renderAfter(operation, meta)}
+                  {typeof renderBefore === 'function'
+                    ? renderBefore(operation, meta)
+                    : null}
+                  {fields.map((field) => {
+                    if (typeof renderItem === 'function') {
+                      const children = renderItem(
+                        field.name,
+                        {
+                          remove: () => operation.remove(field.name),
+                          add: (defaultValue, insertIndex) =>
+                            operation.add(defaultValue, insertIndex),
+                          move: (to) => operation.move(field.name, to),
+                        },
+                        fields
+                      );
+                      return (
+                        <div
+                          className={classNames(
+                            'mq-plus-form-list-item',
+                            itemClassName
+                          )}
+                          style={itemStyle}
+                          key={field.key}
+                        >
+                          {children}
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
+                  {typeof renderAfter === 'function'
+                    ? renderAfter(operation, meta)
+                    : null}
                 </div>
               )
         }
