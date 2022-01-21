@@ -92,24 +92,27 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
                   const lang = o.metadata.locale[language];
                   if (lang) {
                     newProps.label = lang || label || o.metadata.description;
+                    if (
+                      config.locale &&
+                      config.locale.Form &&
+                      config.locale.Form.defaultValidateMessages
+                    ) {
+                      const { required } =
+                        config.locale.Form.defaultValidateMessages;
+
+                      if (
+                        typeof required === 'string' &&
+                        typeof newProps.label === 'string'
+                      ) {
+                        newProps.placeholder = required.replace(
+                          '${label}',
+                          newProps.label
+                        );
+                      }
+                    }
                   }
                 } else {
                   newProps.label = label || o.metadata.description;
-                }
-              }
-
-              if (
-                newProps.label &&
-                typeof newProps.label === 'string' &&
-                config.locale &&
-                config.locale.Form
-              ) {
-                const { required } = config.locale.Form.defaultValidateMessages;
-                if (required) {
-                  newProps.placeholder = (required as string).replace(
-                    '${label}',
-                    newProps.label
-                  );
                 }
               }
             }
