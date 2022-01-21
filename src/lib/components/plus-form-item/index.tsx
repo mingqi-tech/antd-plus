@@ -98,8 +98,8 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
                 }
               }
 
-              if (newProps.label) {
-                newProps.placeholder = `请输入${newProps.label}`;
+              if (typeof newProps.label === 'string') {
+                newProps.placeholder = newProps.label;
               }
             }
           }
