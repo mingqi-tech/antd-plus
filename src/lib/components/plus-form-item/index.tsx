@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import { Form, FormItemProps } from 'antd';
+import { ConfigProvider, Form, FormItemProps } from 'antd';
 import classNames from 'classnames';
 import { ApiPropertyMetadata } from '@quicker-js/http';
 import React, { cloneElement, useContext, useMemo } from 'react';
@@ -60,7 +60,7 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
     { system: { language: LocaleLanguageKey } },
     LocaleLanguageKey
   >((state) => state.system.language);
-
+  const config = useContext(ConfigProvider.ConfigContext);
   const { placeholder, ...options } = useMemo<
     FormItemProps & { placeholder?: string }
   >(() => {
@@ -82,24 +82,35 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
               });
               if (o.metadata.required !== false && !hasRequired) {
                 rules.push({
-                  message: `请输入${o.metadata.description || name}`,
                   required: true,
                 });
                 newProps.rules = rules;
               }
 
-              if (!newProps.label && o.metadata && o.metadata.description) {
-                newProps.label = label || o.metadata.description;
+              if (!newProps.label && o.metadata) {
                 if (o.metadata.locale) {
                   const lang = o.metadata.locale[language];
                   if (lang) {
-                    newProps.label = lang;
+                    newProps.label = lang || label || o.metadata.description;
                   }
+                } else {
+                  newProps.label = label || o.metadata.description;
                 }
               }
 
-              if (typeof newProps.label === 'string') {
-                newProps.placeholder = newProps.label;
+              if (
+                newProps.label &&
+                typeof newProps.label === 'string' &&
+                config.locale &&
+                config.locale.Form
+              ) {
+                const { required } = config.locale.Form.defaultValidateMessages;
+                if (required) {
+                  newProps.placeholder = (required as string).replace(
+                    '${label}',
+                    newProps.label
+                  );
+                }
               }
             }
           }
@@ -108,7 +119,7 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
     }
 
     return newProps;
-  }, [language, name, rules, label, mirrorMap, hidden]);
+  }, [language, name, rules, label, mirrorMap, hidden, config.locale]);
 
   return (
     <Form.Item
