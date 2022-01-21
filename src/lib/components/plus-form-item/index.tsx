@@ -27,6 +27,8 @@ import classNames from 'classnames';
 import { ApiPropertyMetadata } from '@quicker-js/http';
 import React, { cloneElement, useContext, useMemo } from 'react';
 import { PlusForm } from '../plus-form';
+import { useSelector } from 'react-redux';
+import { LocaleLanguageKey } from '@quicker-js/http/dist/types/constants';
 
 /**
  * 表单Item组件
@@ -53,6 +55,11 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
         : React.Children.only(children),
     [children, shouldUpdate, dependencies]
   );
+
+  const language = useSelector<
+    { system: { language: LocaleLanguageKey } },
+    LocaleLanguageKey
+  >((state) => state.system.language);
 
   const { placeholder, ...options } = useMemo<
     FormItemProps & { placeholder?: string }
@@ -83,6 +90,12 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
 
               if (!newProps.label && o.metadata && o.metadata.description) {
                 newProps.label = label || o.metadata.description;
+                if (o.metadata.locale) {
+                  const lang = o.metadata.locale[language];
+                  if (lang) {
+                    newProps.label = lang;
+                  }
+                }
               }
 
               if (newProps.label) {
@@ -95,7 +108,7 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
     }
 
     return newProps;
-  }, [name, rules, label, mirrorMap, hidden]);
+  }, [language, name, rules, label, mirrorMap, hidden]);
 
   return (
     <Form.Item
