@@ -22,7 +22,5 @@
  * SOFTWARE.
  */
 
-import { Context } from './context';
-
 export * from './components';
-export const PlusConfigProvider = Context.Provider;
+export * from './context';

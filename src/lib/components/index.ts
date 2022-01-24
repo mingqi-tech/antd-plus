@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 
+export * from './plus-config-provider';
 export * from './plus-breadcrumb';
 export * from './plus-form';
 export * from './plus-form-item';

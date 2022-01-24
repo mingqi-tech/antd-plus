@@ -24,9 +24,15 @@
 
 import { createContext } from 'react';
 import { HttpClient } from '@quicker-js/http';
+import { LocaleLanguageKey } from '@mingqi/rc-router-dom';
+import { ConfigProviderProps } from 'antd/lib/config-provider';
 
-export const Context = createContext<ContextInstance>({});
+export const Context = createContext<ContextInstance<any>>({});
 
-export interface ContextInstance {
+export interface ContextInstance<
+  T extends Record<string, any> & { language: LocaleLanguageKey }
+> {
   http?: HttpClient;
+  locale?: T;
+  antLocale?: ConfigProviderProps['locale'];
 }

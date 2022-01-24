@@ -22,13 +22,14 @@
  * SOFTWARE.
  */
 
-import { ConfigProvider, Form, FormItemProps } from 'antd';
+import { Form, FormItemProps } from 'antd';
 import classNames from 'classnames';
 import { ApiPropertyMetadata } from '@quicker-js/http';
 import React, { cloneElement, useContext, useMemo } from 'react';
 import { PlusForm } from '../plus-form';
 import { useSelector } from 'react-redux';
 import { LocaleLanguageKey } from '@quicker-js/http/dist/types/constants';
+import { useLocale } from '../../hooks';
 
 /**
  * 表单Item组件
@@ -37,6 +38,7 @@ import { LocaleLanguageKey } from '@quicker-js/http/dist/types/constants';
  */
 export const PlusFormItem = (props: PlusFormItemProps) => {
   const mirrorMap = useContext(PlusForm.Context);
+  const locale = useLocale();
   const {
     name,
     index,
@@ -60,7 +62,6 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
     { system: { language: LocaleLanguageKey } },
     LocaleLanguageKey
   >((state) => state.system.language);
-  const config = useContext(ConfigProvider.ConfigContext);
   const { placeholder, ...options } = useMemo<
     FormItemProps & { placeholder?: string }
   >(() => {
@@ -92,24 +93,6 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
                   const lang = o.metadata.locale[language];
                   if (lang) {
                     newProps.label = lang || label || o.metadata.description;
-                    if (
-                      config.locale &&
-                      config.locale.Form &&
-                      config.locale.Form.defaultValidateMessages
-                    ) {
-                      const { required } =
-                        config.locale.Form.defaultValidateMessages;
-
-                      if (
-                        typeof required === 'string' &&
-                        typeof newProps.label === 'string'
-                      ) {
-                        newProps.placeholder = required.replace(
-                          '${label}',
-                          newProps.label
-                        );
-                      }
-                    }
                   }
                 } else {
                   newProps.label = label || o.metadata.description;
@@ -120,9 +103,25 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
         });
       }
     }
-
+    if (typeof newProps.label === 'string') {
+      if (
+        locale.antLocale &&
+        locale.antLocale.Form &&
+        locale.antLocale.Form.defaultValidateMessages &&
+        typeof locale.antLocale.Form.defaultValidateMessages.required ===
+          'string'
+      ) {
+        newProps.placeholder =
+          locale.antLocale.Form.defaultValidateMessages.required.replace(
+            '${label}',
+            newProps.label
+          );
+      } else {
+        newProps.placeholder = newProps.label;
+      }
+    }
     return newProps;
-  }, [language, name, rules, label, mirrorMap, hidden, config.locale]);
+  }, [language, name, rules, label, mirrorMap, hidden, locale.antLocale]);
 
   return (
     <Form.Item
