@@ -1,6 +1,6 @@
 {
   "name": "@mingqi/antd-plus",
-  "version": "1.0.19",
+  "version": "2.0.0",
   "main": "dist/cjs",
   "types": "dist/types",
   "description": "The antd-plus uses antd@4.17 developed a react component.",
@@ -28,7 +28,7 @@
   "author": "YunlongRan<549510622@qq.com>",
   "license": "MIT",
   "devDependencies": {
-    "@mingqi/rc-router-dom": "^1.1.0",
+    "@mingqi/rc-router-dom": "^1.1.2",
     "@quicker-js/class-decorator": "2.0.0",
     "@quicker-js/class-transformer": "^3.0.0",
     "@quicker-js/http": "2.0.0",
