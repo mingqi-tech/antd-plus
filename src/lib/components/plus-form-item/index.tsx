@@ -67,30 +67,26 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
     if (name && !hidden) {
       const mirror = mirrorMap.get(name);
       if (mirror) {
-        mirror.allMetadata.forEach((o) => {
-          if (o instanceof ApiPropertyMetadata) {
-            if (o.metadata) {
-              const hasRequired = rules.some((rule) => {
-                return (
-                  typeof rule !== 'function' && rule.required !== undefined
-                );
+        mirror.getAllMetadata(ApiPropertyMetadata).forEach((o) => {
+          if (o.metadata) {
+            const hasRequired = rules.some((rule) => {
+              return typeof rule !== 'function' && rule.required !== undefined;
+            });
+            if (o.metadata.required !== false && !hasRequired) {
+              rules.push({
+                required: true,
               });
-              if (o.metadata.required !== false && !hasRequired) {
-                rules.push({
-                  required: true,
-                });
-                newProps.rules = rules;
-              }
+              newProps.rules = rules;
+            }
 
-              if (!newProps.label && o.metadata) {
-                if (o.metadata.locale) {
-                  const lang = o.metadata.locale[locale.language];
-                  if (lang) {
-                    newProps.label = lang || label || o.metadata.description;
-                  }
-                } else {
-                  newProps.label = label || o.metadata.description;
+            if (!newProps.label && o.metadata) {
+              if (o.metadata.locale) {
+                const lang = o.metadata.locale[locale.language];
+                if (lang) {
+                  newProps.label = lang || label || o.metadata.description;
                 }
+              } else {
+                newProps.label = label || o.metadata.description;
               }
             }
           }
