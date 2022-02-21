@@ -1,4 +1,3 @@
-import { ConfigProvider } from 'antd';
 import { Context } from '../../context';
 import { HttpClient } from '@quicker-js/http';
 import { ConfigProviderProps } from 'antd/lib/config-provider';
@@ -13,11 +12,7 @@ import { Omit } from 'react-redux';
  */
 export function PlusConfigProvider(props: PlusConfigProviderProps) {
   const { http, locale, antLocale, ...rest } = props;
-  return (
-    <Context.Provider value={{ http, locale, antLocale }}>
-      <ConfigProvider {...rest} locale={antLocale} />
-    </Context.Provider>
-  );
+  return <Context.Provider value={{ http, locale, antLocale }} {...rest} />;
 }
 
 export interface PlusConfigProviderProps

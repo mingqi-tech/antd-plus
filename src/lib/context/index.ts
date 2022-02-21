@@ -27,10 +27,13 @@ import { HttpClient } from '@quicker-js/http';
 import { LocaleLanguageKey } from '@mingqi/rc-router-dom';
 import { ConfigProviderProps } from 'antd/lib/config-provider';
 
-export const Context = createContext<ContextInstance<any>>({});
+export const Context = createContext<ContextInstance>({});
 
 export interface ContextInstance<
-  T extends Record<string, any> & { language: LocaleLanguageKey }
+  T extends Record<string, any> & { language: LocaleLanguageKey } = Record<
+    string,
+    any
+  > & { language: LocaleLanguageKey }
 > {
   http?: HttpClient;
   locale?: T;
