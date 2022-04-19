@@ -22,12 +22,12 @@
  * SOFTWARE.
  */
 
-import { Form, FormItemProps } from 'antd';
+import {Form, FormItemProps} from 'antd';
 import classNames from 'classnames';
-import { ApiPropertyMetadata } from '@quicker-js/http';
-import React, { cloneElement, useContext, useMemo } from 'react';
-import { useLocale } from '../../hooks';
-import { PlusFormContext } from '../plus-form/context';
+import {ApiPropertyMetadata} from '@quicker-js/http';
+import React, {cloneElement, useContext, useMemo} from 'react';
+import {useLocale} from '../../hooks';
+import {PlusFormContext} from '../plus-form/context';
 
 /**
  * 表单Item组件
@@ -36,7 +36,7 @@ import { PlusFormContext } from '../plus-form/context';
  */
 export const PlusFormItem = (props: PlusFormItemProps) => {
   const mirrorMap = useContext(PlusFormContext);
-  const { locale = { language: 'en_US' }, antLocale } = useLocale();
+  const {locale = {language: 'en_US'}, antLocale} = useLocale();
   const {
     name,
     index,
@@ -56,9 +56,7 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
     [children, shouldUpdate, dependencies]
   );
 
-  const { placeholder, ...options } = useMemo<
-    FormItemProps & { placeholder?: string }
-  >(() => {
+  const {placeholder, ...options} = useMemo<FormItemProps & { placeholder?: string }>(() => {
     const newProps: FormItemProps & { placeholder?: string } = {
       name,
       rules,
@@ -85,7 +83,6 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
             if (o.metadata.required !== false && !hasRequired) {
               rules.push({
                 required: true,
-                message: newProps.label as string,
               });
               newProps.rules = rules;
             }
@@ -108,6 +105,13 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
       } else {
         newProps.placeholder = newProps.label;
       }
+
+      if (Array.isArray(newProps.rules) && newProps.placeholder) {
+        const find: any = newProps.rules.find((rule: any) => rule.required);
+        if (find && !find.message) {
+          find.message = newProps.placeholder;
+        }
+      }
     }
     return newProps;
   }, [locale.language, name, rules, label, mirrorMap, hidden, antLocale]);
@@ -125,8 +129,8 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
         shouldUpdate
           ? child
           : cloneElement(child as any, {
-              placeholder,
-            })
+            placeholder,
+          })
       }
     />
   );
