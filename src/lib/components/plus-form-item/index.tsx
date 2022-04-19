@@ -26,8 +26,8 @@ import { Form, FormItemProps } from 'antd';
 import classNames from 'classnames';
 import { ApiPropertyMetadata } from '@quicker-js/http';
 import React, { cloneElement, useContext, useMemo } from 'react';
-import { PlusForm } from '../plus-form';
 import { useLocale } from '../../hooks';
+import { PlusFormContext } from '../plus-form/context';
 
 /**
  * 表单Item组件
@@ -35,7 +35,7 @@ import { useLocale } from '../../hooks';
  * @constructor
  */
 export const PlusFormItem = (props: PlusFormItemProps) => {
-  const mirrorMap = useContext(PlusForm.Context);
+  const mirrorMap = useContext(PlusFormContext);
   const { locale = { language: 'en_US' }, antLocale } = useLocale();
   const {
     name,

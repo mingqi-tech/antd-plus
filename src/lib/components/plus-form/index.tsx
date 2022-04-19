@@ -23,13 +23,8 @@
  */
 
 import { Form, FormProps } from 'antd';
-import {
-  ClassConstructor,
-  ClassMirror,
-  MethodMirror,
-  PropertyMirror,
-} from '@quicker-js/class-decorator';
-import { createContext, useContext, useMemo } from 'react';
+import { ClassConstructor, ClassMirror } from '@quicker-js/class-decorator';
+import { useContext, useMemo } from 'react';
 import classTransformer from '@quicker-js/class-transformer';
 import classNames from 'classnames';
 import { AxiosError, AxiosResponse } from 'axios';
@@ -37,6 +32,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { PlusFormItem } from '../plus-form-item';
 import { Context } from '../../context';
 import { PlusFormList } from '../plus-form-list';
+import { PlusFormContext } from './context';
 
 /**
  * 表单组件
@@ -48,11 +44,11 @@ export const PlusForm = <R, T extends {}>(props: PlusFormProps<R, T>) => {
     props;
   const { http } = useContext(Context);
   const mirrors = useMemo(
-    () => ClassMirror.reflect(model).getAllProperties(),
+    () => ClassMirror.reflect(model).getAllInstanceMembers(),
     [model]
   );
   return (
-    <PlusForm.Context.Provider value={mirrors}>
+    <PlusFormContext.Provider value={mirrors}>
       <Form
         autoComplete="off"
         {...rest}
@@ -86,13 +82,11 @@ export const PlusForm = <R, T extends {}>(props: PlusFormProps<R, T>) => {
           }
         }}
       />
-    </PlusForm.Context.Provider>
+    </PlusFormContext.Provider>
   );
 };
 
-PlusForm.Context = createContext<
-  Map<PropertyKey, PropertyMirror | MethodMirror>
->(new Map());
+PlusForm.Context = PlusFormContext;
 PlusForm.Item = PlusFormItem;
 PlusForm.List = PlusFormList;
 

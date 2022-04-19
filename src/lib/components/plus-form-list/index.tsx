@@ -54,7 +54,7 @@ export const PlusFormList = (props: PlusFormListProps) => {
   } = props;
 
   const mirrors = useMemo(
-    () => ClassMirror.reflect(model).getAllProperties(),
+    () => ClassMirror.reflect(model).getAllInstanceMembers(),
     [model]
   );
   return (
