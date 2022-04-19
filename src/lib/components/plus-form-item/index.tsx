@@ -72,14 +72,7 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
             const hasRequired = rules.some((rule) => {
               return typeof rule !== 'function' && rule.required !== undefined;
             });
-            if (o.metadata.required !== false && !hasRequired) {
-              rules.push({
-                required: true,
-              });
-              newProps.rules = rules;
-            }
-
-            if (!newProps.label && o.metadata) {
+            if (!newProps.label && o.metadata && !newProps.label) {
               if (o.metadata.locale) {
                 const lang = o.metadata.locale[locale.language];
                 if (lang) {
@@ -88,6 +81,13 @@ export const PlusFormItem = (props: PlusFormItemProps) => {
               } else {
                 newProps.label = label || o.metadata.description;
               }
+            }
+            if (o.metadata.required !== false && !hasRequired) {
+              rules.push({
+                required: true,
+                message: newProps.label as string,
+              });
+              newProps.rules = rules;
             }
           }
         });
