@@ -71,13 +71,41 @@ http.interceptors.response.use((res) => {
 ```
 
 ```tsx
-import {http} from './http';
+// Your http and transformer tools
+// http from package @quick-toolkit/http instance and transformer from package @quick-toolkit/class-transform instance.
+import { http, transformer } from 'src/utils';
+import en_US from 'antd/lib/locale/en_US';
+import zh_HK from 'antd/lib/locale/zh_HK';
+import zh_CN from 'antd/lib/locale/zh_CN';
+import {PlusProvider} from '@quick-toolkit/ant-design-plus';
 
-export function App() {
+// Your locales.
+import * as locales from 'src/locales';
+
+
+const theme = 'dark';
+const antLocales = {
+  zh_CN,
+  zh_HK,
+  en_US,
+};
+
+export function Layout() {
     return (
-        <PlusConfigProvider value={{http}}>
-            Your application
-        </PlusConfigProvider>
+      <PlusProvider
+        theme={theme}
+        antProviderProps={{
+          prefixCls: theme === 'dark' ? 'ant-dark' : 'ant',
+        }}
+        antLocale={antLocales[language]}
+        locale={locales[language]}
+        http={http}
+        transformer={transformer}
+      >
+        <Suspense fallback={<FullSpinning />}>
+          <Outlet />
+        </Suspense>
+      </PlusProvider>
     )
 }
 ```
@@ -282,62 +310,6 @@ export default () => {
     );
 };
  ```
-
-- **PlusBreadcrumb** component
-
-> Your must uses [@quick-toolkit/rc-router-dom](https://quick-toolkit.github.io/rc-router-dom), [PlusBreadcrumb](https://quick-toolkit.github.io/ant-design-plus/modules.html#PlusBreadcrumb) in [RCRoute](https://quick-toolkit.github.io/rc-router-dom/classes/RCRoute.html#Context) context.
-
-```tsx
-import {PlusBreadcrumb} from '@quick-toolkit/ant-design-plus';
-import {Button, Input, Layout} from 'antd';
-
-export default () => {
-    return (
-        <Layout>
-            {/* use PlusBreadcrumb */}
-            <PlusBreadcrumb/>
-            <div className="page">
-                This is a page.
-            </div>
-        </Layout>
-    );
-};
-
-```
-
-- **PlusSiderMenu** component
-
-> Your must uses [@quick-toolkit/rc-router-dom](https://quick-toolkit.github.io/rc-router-dom), [PlusSiderMenu](https://quick-toolkit.github.io/ant-design-plus/modules.html#PlusSiderMenu)  in [RCRoute](https://quick-toolkit.github.io/rc-router-dom/classes/RCRoute.html#Context) context.
-
-```tsx
-import {Layout} from 'antd';
-import React, {Suspense, useEffect} from 'react';
-import {Outlet, useMatch, useNavigate} from 'react-router-dom';
-import {PlusSiderMenu} from '@quick-toolkit/ant-design-plus';
-
-import {AutoLoading} from '../../components';
-import './styles/index.less';
-
-export default () => {
-    const navigate = useNavigate();
-
-    return (
-        <Layout className="authentication">
-            <Layout.Header/>
-            <Layout>
-                <Layout.Sider collapsed={false} theme="light">
-                    <PlusSiderMenu mode="inline" theme="light"/>
-                </Layout.Sider>
-                <Layout.Content className="pages">
-                    <Suspense fallback={<AutoLoading/>}>
-                        <Outlet/>
-                    </Suspense>
-                </Layout.Content>
-            </Layout>
-        </Layout>
-    );
-};
-```
 
 ## Documentation
 
