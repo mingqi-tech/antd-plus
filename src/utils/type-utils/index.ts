@@ -22,7 +22,22 @@
  * SOFTWARE.
  */
 
-export * from './components';
-export * from './locales';
-export * from './utils';
-export * from './hooks';
+/**
+ * 类型检测工具
+ */
+export class TypeUtils {
+  /**
+   * 判断对象是否为Promise
+   * @param o
+   */
+  public static isPromise(o: any) {
+    return (
+      o instanceof Promise ||
+      (typeof o === 'object' &&
+        o !== null &&
+        typeof o.then === 'function' &&
+        typeof o.catch === 'function' &&
+        typeof o.finally === 'function')
+    );
+  }
+}

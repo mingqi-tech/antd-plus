@@ -22,7 +22,36 @@
  * SOFTWARE.
  */
 
-export * from './components';
-export * from './locales';
-export * from './utils';
-export * from './hooks';
+import { ClassConstructor, ClassMirror } from '@quick-toolkit/class-mirror';
+import { ApiRequestDecorate } from '@quick-toolkit/http';
+
+/**
+ * 本地语言包处理工具
+ */
+export class LocaleUtils {
+  /**
+   * 获取模型的locale
+   */
+  public static getModelLocale(
+    model: ClassConstructor,
+    language: LanguageKeys
+  ): string | null {
+    const classMirror = ClassMirror.reflect(model);
+    const decorates = classMirror.getAllDecorates(ApiRequestDecorate);
+    let title: string | null = null;
+    let description: string | null = null;
+    decorates.find((decorate) => {
+      const { metadata } = decorate;
+      const locales = metadata.locales;
+      if (locales && locales[language]) {
+        title = locales[language] || null;
+        if (!description && metadata.description) {
+          description = metadata.description;
+        }
+        return true;
+      }
+      return false;
+    });
+    return title || description;
+  }
+}

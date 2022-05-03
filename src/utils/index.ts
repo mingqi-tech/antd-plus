@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-export * from './components';
-export * from './locales';
-export * from './utils';
-export * from './hooks';
+export * from './type-utils';
+export * from './env-utils';
+export * from './locale-utils';

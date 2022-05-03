@@ -22,7 +22,21 @@
  * SOFTWARE.
  */
 
-export * from './components';
-export * from './locales';
-export * from './utils';
-export * from './hooks';
+/**
+ * 环境变量工具
+ */
+export class EnvUtils {
+  /**
+   * 是否为开发模式
+   */
+  public static isDev() {
+    return process.env.NODE_ENV === 'development';
+  }
+
+  /**
+   * 是否为生产模式
+   */
+  public static isProd() {
+    return process.env.NODE_ENV === 'production';
+  }
+}

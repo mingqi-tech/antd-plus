@@ -22,7 +22,5 @@
  * SOFTWARE.
  */
 
-export * from './components';
-export * from './locales';
-export * from './utils';
-export * from './hooks';
+export * from './use-plus-locale';
+export * from './use-plus-theme';

@@ -22,7 +22,12 @@
  * SOFTWARE.
  */
 
-export * from './components';
-export * from './locales';
-export * from './utils';
-export * from './hooks';
+import { useContext } from 'react';
+import { PlusContext } from '../../components';
+
+/**
+ * 使用plus提供的主题
+ */
+export function usePlusTheme() {
+  return useContext(PlusContext).theme;
+}

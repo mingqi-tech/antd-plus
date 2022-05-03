@@ -22,7 +22,13 @@
  * SOFTWARE.
  */
 
-export * from './components';
-export * from './locales';
-export * from './utils';
-export * from './hooks';
+import { useContext } from 'react';
+import { PlusContext } from '../../components';
+import { zh_CN } from '../../locales';
+
+/**
+ * 使用Plus提供的语言包
+ */
+export function usePlusLocale<T extends AntPlusLocale = AntPlusLocale>(): T {
+  return (useContext(PlusContext).locale || zh_CN) as T;
+}

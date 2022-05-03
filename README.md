@@ -1,41 +1,41 @@
-# antd-plus
+# ant-design-plus
 
-The `antd-plus` uses `ant@4.17` developed a react component.
+The `ant-design-plus` uses `ant@4.17` developed a react component.
 
 ## Installing
 
 ```shell
 # ant库
-npm i antd @mingqi/rc-router-dom @quicker-js/class-decorator @quicker-js/class-transformer @quicker-js/http @mingqi/antd-plus
+npm i antd @quick-toolkit/rc-router-dom @quick-toolkit/class-decorator @quick-toolkit/class-transformer @quick-toolkit/http @quick-toolkit/ant-design-plus
 #or
-yarn add @mingqi/rc-router-dom @quicker-js/class-decorator @quicker-js/class-transformer @quicker-js/http @mingqi/antd-plus
+yarn add @quick-toolkit/rc-router-dom @quick-toolkit/class-decorator @quick-toolkit/class-transformer @quick-toolkit/http @quick-toolkit/ant-design-plus
 ```
 
-[@mingqi/rc-router-dom](https://mingqi-tech.github.io/rc-router-dom/)
-提供路由解析和提供路由的上下文信息， [@quicker-js/class-decorator](https://quicker-js.github.io/class-decorator/)
-提供类装饰器映射，[@quicker-js/class-transformer](https://quicker-js.github.io/class-transformer/) 提供实例转换功能，
-[@quicker-js/http](https://quicker-js.github.io/http/) 提供在发起http请求时根据装饰器注解的信息自动请求
+[@quick-toolkit/rc-router-dom](https://quick-toolkit.github.io/rc-router-dom/)
+提供路由解析和提供路由的上下文信息， [@quick-toolkit/class-decorator](https://quick-toolkit.github.io/class-decorator/)
+提供类装饰器映射，[@quick-toolkit/class-transformer](https://quick-toolkit.github.io/class-transformer/) 提供实例转换功能，
+[@quick-toolkit/http](https://quick-toolkit.github.io/http/) 提供在发起http请求时根据装饰器注解的信息自动请求
 
 ## Example Usage
 
 ```ts
 // import components
-import {PlusForm} from '@mingqi/antd-plus';
+import {PlusForm} from '@quick-toolkit/ant-design-plus';
 // import css
-import '@mingqi/antd-plus/dist/cjs/index.css'
+import '@quick-toolkit/ant-design-plus/dist/cjs/index.css'
 // or import less file.
-import '@mingqi/antd-plus/src/lib/components/index.less'
+import '@quick-toolkit/ant-design-plus/src/lib/components/index.less'
 ```
 
 - **PlusForm** component
 -
 
-> Your must before create [http](https://quicker-js.github.io/http/) instance and use [PlusConfigProvider](https://mingqi-tech.github.io/antd-plus/modules.html#PlusConfigProvider)
-provide http, see more [PlusForm](https://mingqi-tech.github.io/antd-plus/modules.html#PlusForm) and [PlusForm.Item](https://mingqi-tech.github.io/antd-plus/modules.html#PlusFormItem)
+> Your must before create [http](https://quick-toolkit.github.io/http/) instance and use [PlusConfigProvider](https://quick-toolkit.github.io/ant-design-plus/modules.html#PlusConfigProvider)
+provide http, see more [PlusForm](https://quick-toolkit.github.io/ant-design-plus/modules.html#PlusForm) and [PlusForm.Item](https://quick-toolkit.github.io/ant-design-plus/modules.html#PlusFormItem)
 
 ```ts
 // http.ts
-import {HttpClient} from '@quicker-js/http';
+import {HttpClient} from '@quick-toolkit/http';
 import qs from 'qs';
 import {Modal} from 'antd';
 
@@ -87,8 +87,8 @@ export function App() {
  * api/login-response-dto.ts
  * @class LoginResponseDto
  */
-import {Typed} from '@quicker-js/class-transformer';
-import {ApiProperty} from '@quicker-js/http';
+import {Typed} from '@quick-toolkit/class-transformer';
+import {ApiProperty} from '@quick-toolkit/http';
 
 export class LoginResponseDto {
     /**
@@ -143,8 +143,8 @@ export class LoginResponseDto {
  */
 import {CaptchaImageDto} from './captcha-image-dto';
 import {LoginResponseDto} from './login-response-dto';
-import {Typed} from '@quicker-js/class-transformer';
-import {ApiProperty} from '@quicker-js/http';
+import {Typed} from '@quick-toolkit/class-transformer';
+import {ApiProperty} from '@quick-toolkit/http';
 
 export class HttpResource<T> {
     @ApiProperty({type: 'string'})
@@ -180,8 +180,8 @@ export class HttpResource<T> {
  * api/post-auth-login.ts
  * @class PostAuthLogin
  */
-import {Typed} from '@quicker-js/class-transformer';
-import {ApiProperty, ApiRequest} from '@quicker-js/http';
+import {Typed} from '@quick-toolkit/class-transformer';
+import {ApiProperty, ApiRequest} from '@quick-toolkit/http';
 import {HttpResource} from './http-resource';
 
 @ApiRequest({
@@ -226,7 +226,7 @@ export class PostAuthLogin {
 ```tsx
 import {Button, Input, Layout, Typography} from 'antd';
 import {PostAuthLogin} from './post-auth-login';
-import {PlusForm} from '@mingqi/antd-plus';
+import {PlusForm} from '@quick-toolkit/ant-design-plus';
 import {
     EyeInvisibleOutlined,
     EyeOutlined,
@@ -285,10 +285,10 @@ export default () => {
 
 - **PlusBreadcrumb** component
 
-> Your must uses [@mingqi/rc-router-dom](https://mingqi-tech.github.io/rc-router-dom), [PlusBreadcrumb](https://mingqi-tech.github.io/antd-plus/modules.html#PlusBreadcrumb) in [RCRoute](https://mingqi-tech.github.io/rc-router-dom/classes/RCRoute.html#Context) context.
+> Your must uses [@quick-toolkit/rc-router-dom](https://quick-toolkit.github.io/rc-router-dom), [PlusBreadcrumb](https://quick-toolkit.github.io/ant-design-plus/modules.html#PlusBreadcrumb) in [RCRoute](https://quick-toolkit.github.io/rc-router-dom/classes/RCRoute.html#Context) context.
 
 ```tsx
-import {PlusBreadcrumb} from '@mingqi/antd-plus';
+import {PlusBreadcrumb} from '@quick-toolkit/ant-design-plus';
 import {Button, Input, Layout} from 'antd';
 
 export default () => {
@@ -307,13 +307,13 @@ export default () => {
 
 - **PlusSiderMenu** component
 
-> Your must uses [@mingqi/rc-router-dom](https://mingqi-tech.github.io/rc-router-dom), [PlusSiderMenu](https://mingqi-tech.github.io/antd-plus/modules.html#PlusSiderMenu)  in [RCRoute](https://mingqi-tech.github.io/rc-router-dom/classes/RCRoute.html#Context) context.
+> Your must uses [@quick-toolkit/rc-router-dom](https://quick-toolkit.github.io/rc-router-dom), [PlusSiderMenu](https://quick-toolkit.github.io/ant-design-plus/modules.html#PlusSiderMenu)  in [RCRoute](https://quick-toolkit.github.io/rc-router-dom/classes/RCRoute.html#Context) context.
 
 ```tsx
 import {Layout} from 'antd';
 import React, {Suspense, useEffect} from 'react';
 import {Outlet, useMatch, useNavigate} from 'react-router-dom';
-import {PlusSiderMenu} from '@mingqi/antd-plus';
+import {PlusSiderMenu} from '@quick-toolkit/ant-design-plus';
 
 import {AutoLoading} from '../../components';
 import './styles/index.less';
@@ -342,14 +342,14 @@ export default () => {
 ## Documentation
 
 - [ant](https://ant.design/index-cn)
-- [ApiDocs](https://mingqi-tech.github.io/antd-plus/)
-- [GitRepository](https://github.com/mingqi-tech/antd-plus)
+- [ApiDocs](https://quick-toolkit.github.io/ant-design-plus/)
+- [GitRepository](https://github.com/quick-toolkit/ant-design-plus)
 
 ## Issues
 
-Create [issues](https://github.com/mingqi-tech/antd-plus/issues) in this repository for anything related to the
-antd-plus. When creating issues please search for existing issues to avoid duplicates.
+Create [issues](https://github.com/quick-toolkit/ant-design-plus/issues) in this repository for anything related to the
+ant-design-plus. When creating issues please search for existing issues to avoid duplicates.
 
 ## License
 
-Licensed under the [MIT](https://github.com/mingqi-tech/antd-plus/blob/master/LICENSE) License.
+Licensed under the [MIT](https://github.com/quick-toolkit/ant-design-plus/blob/master/LICENSE) License.
