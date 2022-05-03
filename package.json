@@ -10,7 +10,7 @@
     "build:cjs": "tsc --project tsconfig.prod.cjs.json",
     "build:types": "tsc --project tsconfig.prod.types.json",
     "build:css": "lessc ./src/lib/components/index.less ./dist/cjs/index.css",
-    "release": "yarn build:clean &&  yarn build:cjs && yarn build:css && yarn build:types &&  yarn doc",
+    "release": "yarn build:clean &&  yarn build:cjs && yarn build:types",
     "doc": "typedoc --options ./typedoc.json"
   },
   "repository": {
